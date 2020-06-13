@@ -11,6 +11,7 @@ black = "*"
 [packages]
 django = "==3.0.6"
 pylint = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.8"
