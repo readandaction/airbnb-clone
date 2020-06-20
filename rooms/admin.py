@@ -84,7 +84,6 @@ class RoomAdmin(admin.ModelAdmin):
     raw_id_fields = ("host",)
 
     def count_amenities(self, obj):
-        print(obj)
         return obj.amenities.count()
 
     def count_photos(self, obj):
