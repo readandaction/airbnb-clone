@@ -13,6 +13,7 @@ django = "==3.0.6"
 pylint = "*"
 pillow = "*"
 django-countries = "*"
+django-seed = "*"
 
 [requires]
 python_version = "3.8"
