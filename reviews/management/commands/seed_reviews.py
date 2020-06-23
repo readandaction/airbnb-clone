@@ -36,8 +36,6 @@ class Command(BaseCommand):
                 "room": lambda x: random.choice(all_rooms),
             },
         )
-        created_reviews = seeder.execute()
-        clean_review = flatten(list(created_reviews.values()))
-        print(clean_review)
+        seeder.execute()
 
         self.stdout.write(self.style.SUCCESS(f"{numbers} reviews created"))
