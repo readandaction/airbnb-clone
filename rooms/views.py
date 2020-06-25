@@ -12,5 +12,5 @@ def all_rooms(request):
     room_list = models.Room.objects.all()
     paginator = Paginator(room_list, 10)
     rooms = paginator.get_page(page)
-    return render(request, "rooms/home.html", context={"rooms": rooms},)
+    return render(request, "rooms/home.html", context={"page": rooms},)
 
