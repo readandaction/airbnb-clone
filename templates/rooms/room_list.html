@@ -6,9 +6,11 @@ Home
 {% block content %}
 {{now}}
 {% for room in rooms %}
-<h1>
+<h3>
+  <a href=" {% url "rooms:detail" room.pk %} ">
   {{room.name}} / ${{room.price}}
-</h1>
+  </a>
+</h3>
 {% endfor %}
 {% if page_obj.has_previous %}
 <a href="?page={{page_obj.previous_page_number}}">Previous</a>
