@@ -100,10 +100,15 @@
     <button>search</button>
     
   </form>
+  <h4>Result</h4>
+  {% for room in  rooms %}
+    <h3>{{room.name}}</h3>
+  {% endfor %}
 {% endblock search_bar %}
 
 {% block content %}
- <h1> Search </h1>
+ <h4> Search </h4>
   <h4> Search by {{city}}</h4>
+  
 
 {% endblock content %}
