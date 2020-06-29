@@ -1,4 +1,5 @@
 from django.views.generic import ListView, DetailView, View
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.http import Http404
 from django.urls import reverse
@@ -84,9 +85,25 @@ class SearchView(View):
                     filter_args["amenities"] = amenity
                 for facility in facilities:
                     filter_args["facilities"] = facility
-                rooms = models.Room.objects.filter(**filter_args)
+                qs = models.Room.objects.filter(**filter_args).order_by("-created")
+
+                paginator = Paginator(qs, 1, orphans=0)
+                num_pages = paginator.num_pages
+                page = request.GET.get("page", 1)
+                rooms = paginator.page(page)
+                return render(
+                    request,
+                    "rooms/search.html",
+                    {
+                        "form": form,
+                        "rooms": rooms,
+                        "page": page,
+                        "num_pages": num_pages,
+                    },
+                )
+
         else:
             form = forms.SearchForm()
 
-        return render(request, "rooms/search.html", {"form": form, "rooms": rooms},)
+        return render(request, "rooms/search.html", {"form": form,},)
 

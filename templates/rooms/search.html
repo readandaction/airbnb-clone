@@ -11,11 +11,18 @@
   {% for room in  rooms %}
     <h3>{{room.name}}</h3>
   {% endfor %}
+  {% if rooms.has_previous %}
+    <a href="?page={{rooms.previous_page_number}}">previous</a>
+  {% endif %}
+  {{page}}/{{num_pages}}
+  {% if rooms.has_next %}
+    <a href="?page={{rooms.next_page_number}}">next</a>
+  {% endif %}
 {% endblock search_bar %}
 
 {% block content %}
  <h4> Search </h4>
-  <h4> Search by {{city}}</h4>
+  <h4> Search by </h4>
   
 
 {% endblock content %}
