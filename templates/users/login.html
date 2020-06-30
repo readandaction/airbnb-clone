@@ -3,26 +3,13 @@
     Login
 {% endblock page_title %}
 {% block search_bar %}
-  <form method="get" action="{% url "rooms:search" %}">
-    {{form.as_p}}
-    <button>Search</button>
-  </form>
-  <h4>Result</h4>
-  {% for room in  rooms %}
-    <h3>{{room.name}}</h3>
-  {% endfor %}
-  {% if rooms.has_previous %}
-    <a href="?page={{rooms.previous_page_number}}">previous</a>
-  {% endif %}
-  {{page}}/{{num_pages}}
-  {% if rooms.has_next %}
-    <a href="?page={{rooms.next_page_number}}">next</a>
-  {% endif %}
 {% endblock search_bar %}
 
 {% block content %}
- <h4> Search </h4>
-  <h4> Search by </h4>
-  
-
+ <form method="post" action="{% url "users:login" %}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>Login</button>
+  </form>
+ 
 {% endblock content %}
