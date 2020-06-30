@@ -7,7 +7,7 @@ class LoginView(View):
     """ LoginView Definition """
 
     def get(self, request):
-        form = forms.LoginForm(initial={"email": "123@123.123"})
+        form = forms.LoginForm(initial={"email": "hswanson@smith.com"})
         return render(request, "users/login.html", {"form": form})
 
     def post(self, request):
