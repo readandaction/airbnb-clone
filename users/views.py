@@ -53,3 +53,11 @@ def log_out(request):
 # def login(request):
 #     if request.GET.method == "get":
 #     else request.GET.method == "post":
+
+
+class SignupView(FormView):
+    """ SignupView Definition """
+
+    template_name = "users/signup.html"
+    form_class = forms.SignupForm
+    success_url = reverse_lazy("core:home")
