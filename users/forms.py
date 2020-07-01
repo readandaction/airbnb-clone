@@ -44,3 +44,14 @@ class SignupForm(forms.Form):
             raise forms.ValidationError("Password doent match")
         else:
             return password
+    
+    def save(self):
+        last_name = self.cleaned_data.get("last_name")
+        first_name = self.cleaned_data.get("first_name")
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+        
+        user = models.User.objects.create_user(email, email, password)
+        user.last_name = last_name
+        user.first_name = first_name
+        user.save()
