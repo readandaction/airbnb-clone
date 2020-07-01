@@ -21,21 +21,26 @@ class LoginForm(forms.Form):
             self.add_error("email", forms.ValidationError("User does not exist"))
 
 
-class SignupForm(forms.Form):
+class SignupForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ("first_name", "last_name", "email")
 
-    last_name = forms.CharField(max_length=80)
-    first_name = forms.CharField(max_length=80)
-    email = forms.EmailField()
+    # ---forms.form
+    # first_name = forms.CharField(max_length=80)
+    # last_name = forms.CharField(max_length=80)
+    # email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     password1 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
 
-    def clean_email(self):
-        email = self.cleaned_data.get("email")
-        try:
-            models.User.objects.get(email=email)
-            raise forms.ValidationError("User already existed")
-        except models.User.DoesNotExist:
-            return email
+    #  ---forms.form
+    # def clean_email(self):
+    #     email = self.cleaned_data.get("email")
+    #     try:
+    #         models.User.objects.get(email=email)
+    #         raise forms.ValidationError("User already existed")
+    #     except models.User.DoesNotExist:
+    #         return email
 
     def clean_password1(self):
         password = self.cleaned_data.get("password")
@@ -44,14 +49,11 @@ class SignupForm(forms.Form):
             raise forms.ValidationError("Password doent match")
         else:
             return password
-    
-    def save(self):
-        last_name = self.cleaned_data.get("last_name")
-        first_name = self.cleaned_data.get("first_name")
+
+    def save(self, *args, **kwargs):
+        user = super().save(commit=False)
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
-        
-        user = models.User.objects.create_user(email, email, password)
-        user.last_name = last_name
-        user.first_name = first_name
+        user.username = email
+        user.set_password(password)
         user.save()
