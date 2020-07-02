@@ -59,3 +59,6 @@ class User(AbstractUser):
                 html_message=html_message,
                 fail_silently=False,
             )
+            self.save()
+
+        return
