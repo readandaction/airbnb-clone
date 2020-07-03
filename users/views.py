@@ -103,19 +103,24 @@ def github_callback(request):
     if code is not None:
         result = requests.post(
             f"https://github.com/login/oauth/access_token?client_id={client_id}&client_secret={client_secret}&code={code}",
-            header={"Accept": "application/json"},
+            headers={"Accept": "application/json"},
         )
         result_json = result.json()
-        error = result_json.get("error",None)
+        error = result_json.get("error", None)
         if error is not None:
             return redirect(reverse("users:login"))
         else:
-            access_token = result_json.get('access_token')
-            profile_request = requests.get("https://api.github.com/user", 
-                                        header={"Authorization": f"token {access_token}",
-                                        "Accept": "application/json"})
+            access_token = result_json.get("access_token")
+            profile_request = requests.get(
+                "https://api.github.com/user",
+                headers={
+                    "Authorization": f"token {access_token}",
+                    "Accept": "application/json",
+                },
+            )
             profile_json = profile_request.json()
-            username = profile_json.get("login",None)
+            print(profile_json)
+            username = profile_json.get("login", None)
             if username is not None:
                 name = profile_json.get("name")
                 email = profile_json.get("email")
@@ -124,10 +129,10 @@ def github_callback(request):
                 if user is not None:
                     return redirect(reverse("user:login"))
                 else:
-                    user=models.User.objects.create(
+                    user = models.User.objects.create(
                         username=email, first_name=name, bio=bio, email=email
                     )
                     return redirect(reverse("core:home"))
     else:
-        return redirect(reverse("core:home")
+        return redirect(reverse("core:home"))
 
