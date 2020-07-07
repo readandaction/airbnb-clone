@@ -12,17 +12,17 @@ Home
       {% include "partials/room_card.html" with room=room%}
     {% endfor %}
   </div>
-  
+  <div class="container flex items-center justify-center mx-auto">
   {% if page_obj.has_previous %}
-  <a href="?page={{page_obj.previous_page_number}}">Previous</a>
+  <a href="?page={{page_obj.previous_page_number}}"><i class="fas fa-arrow-left text-teal-400"></i></a>
   {% endif %}
-  {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+  <span class="mx-3">
+    {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+  </span>
   {% if page_obj.has_next %}
-  <a href="?page={{page_obj.next_page_number}}">Next</a>
+  <a href="?page={{page_obj.next_page_number}}"><i class="fas fa-arrow-right text-teal-400"></i></a>
   {% endif %}
-  {% for page in page_obj.paginator.page_range %}
-    {{page}}
-  {% endfor %}
+  </div>
 </div>
 
 {% endblock content %}
