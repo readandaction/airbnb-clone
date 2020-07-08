@@ -49,6 +49,7 @@ class LoginView(FormView):
 
 def log_out(request):
     """ logout definition"""
+    messages.info(request, "See you later")
     logout(request)
     return redirect(reverse("users:login"))
 
