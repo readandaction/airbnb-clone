@@ -10,10 +10,11 @@
     <p>{{room.description}}</p>
 </div>
 <div>
-    <h3> By : {{room.host.username}}
+    <h3> <a href="{{room.host.get_absolute_url}}">By : {{room.host.username}}
         {% if room.host.superuser %}
             (superhost)
         {% endif %}
+        </a>
     </h3>
 </div>
 <div>
