@@ -5,36 +5,12 @@
 {% endblock page_title %}
 
 {% block content %}
-<div>
-    <h1>{{room.name}}</h1>
-    <p>{{room.description}}</p>
-</div>
-<div>
-    <h3> <a href="{{room.host.get_absolute_url}}">By : {{room.host.username}}
-        {% if room.host.superuser %}
-            (superhost)
-        {% endif %}
-        </a>
-    </h3>
-</div>
-<div>
-    <h3>Amenities</h3>
-    <ul>
-        {% for item in room.amenities.all %}
-            <li>{{item}}</li>
-        {% endfor %}
-    </ul>
-    <h3>Facilities</h3>
-    <ul>
-        {% for item in room.facilities.all %}
-            <li>{{item}}</li>
-        {% endfor %}
-    </ul>
-    <h3>House Rules</h3>
-    <ul>
-        {% for item in room.house_rules.all %}
-            <li>{{item}}</li>
-        {% endfor %}
-    </ul>
-</div>
+    <div class="-mt-5 contaner max-w-full flex h-75vh mb-20">
+        <div class="h-full w-1/2 bg-cover" style="background-image: url({{room.first_photo}});"></div>
+        <div class="w-1/2 flex flex-wrap">
+            {% for photo in room.get_next_four_photos %}
+                <div class="w-1/2 h-auto bg-cover border border-gray-400" style="background-image: url({{photo.file.url}});"></div>
+            {% endfor%}
+        </div>
+    </div>
 {% endblock content %}
