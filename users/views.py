@@ -3,14 +3,15 @@ import requests
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import FormView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.views import View
-from . import forms, models
+from . import forms, models, mixins
 
 
-class LoginView(FormView):
+class LoginView(mixins.LoggedOutOnlyView, FormView):
     """ LoginView Definition """
 
     template_name = "users/login.html"
@@ -60,7 +61,7 @@ def log_out(request):
 #     else request.GET.method == "post":
 
 
-class SignupView(FormView):
+class SignupView(mixins.LoggedOutOnlyView, FormView):
     """ SignupView Definition """
 
     template_name = "users/signup.html"
@@ -167,7 +168,7 @@ class UserProfileView(DetailView):
     context_object_name = "user_obj"
 
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(SuccessMessageMixin, UpdateView):
     model = models.User
     fields = (
         "first_name",
@@ -178,6 +179,8 @@ class UpdateProfileView(UpdateView):
         "langauge",
     )
     template_name = "users/update-profile.html"
+
+    success_message = "Profile Update"
 
     def get_object(self, queryset=None):
         return self.request.user
