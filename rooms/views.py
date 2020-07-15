@@ -5,6 +5,7 @@ from django.http import Http404
 from django.urls import reverse
 from django_countries import countries
 from . import models, forms
+from users import mixins as user_mixins
 
 # Create your views here.
 
@@ -108,7 +109,7 @@ class SearchView(View):
         return render(request, "rooms/search.html", {"form": form,},)
 
 
-class EditRoomView(UpdateView):
+class EditRoomView(user_mixins.LogInRequiredView, UpdateView):
     model = models.Room
     fields = (
         "name",
@@ -130,3 +131,21 @@ class EditRoomView(UpdateView):
         "house_rules",
     )
     template_name = "rooms/room_edit.html"
+
+    def get_object(self, queryset=None):
+        room = super().get_object(queryset=queryset)
+        if room.host.pk != self.request.user.pk:
+            raise Http404()
+        return room
+
+
+class RoomPhotosView(DetailView):
+
+    model = models.Room
+    template_name = "room_photos.html"
+
+    def get_object(self, queryset=None):
+        room = super().get_object(queryset=queryset)
+        if room.host.pk != self.request.user.pk:
+            raise Http404()
+        return room

@@ -112,4 +112,3 @@ class Room(core_models.TimeStampedModel):
         four_photos = self.photos.all()[1:5]
         return four_photos
 
-    
