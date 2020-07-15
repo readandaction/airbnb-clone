@@ -139,10 +139,10 @@ class EditRoomView(user_mixins.LogInRequiredView, UpdateView):
         return room
 
 
-class RoomPhotosView(DetailView):
+class RoomPhotosView(user_mixins.LogInRequiredView, DetailView):
 
     model = models.Room
-    template_name = "room_photos.html"
+    template_name = "rooms/room_photos.html"
 
     def get_object(self, queryset=None):
         room = super().get_object(queryset=queryset)
