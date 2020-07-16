@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, View, UpdateView
+from django.views.generic import ListView, DetailView, View, UpdateView, FormView
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.http import Http404
@@ -179,4 +179,14 @@ class EditPhotoView(user_mixins.LogInRequiredView, SuccessMessageMixin, UpdateVi
     def get_success_url(self):
         room_pk = self.kwargs.get("room_pk")
         return reverse("rooms:photos", kwargs={"pk": room_pk})
+
+
+class AddPhotoView(user_mixins.LogInRequiredView, SuccessMessageMixin, FormView):
+    model = models.Photo
+    template_name = "rooms/photo_add.html"
+    form_class = forms.AddPhotoForm
+
+    def form_valid(self, form):
+        pk = self.kwargs.get("pk")
+        form.save(pk)
 
