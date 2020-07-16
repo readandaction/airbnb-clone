@@ -3,6 +3,7 @@ import requests
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import FormView, DetailView, UpdateView
@@ -214,3 +215,12 @@ class UpdatePasswordView(
         form.fields["new_password2"].widget.attrs = {"placeholder": "confirm password"}
 
         return form
+
+
+@login_required
+def switch_hosting(request):
+    try:
+        del request.session["is_hosting"]
+    except:
+        request.session["is_hosting"] = True
+    return redirect(reverse("core:home"))

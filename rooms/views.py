@@ -163,6 +163,7 @@ def delete_photo(request, room_pk, photo_pk):
             messages.error(request, "Can't Delete that Photo")
         else:
             room.photos.filter(pk=photo_pk).delete()
+            messages.success(request, "Deleted Photo")
         return redirect(reverse("rooms:photos", kwargs={"pk": room_pk}))
     except models.Room.DoesNotExist:
         return redirect(reverse("core:home"))
@@ -184,9 +185,11 @@ class EditPhotoView(user_mixins.LogInRequiredView, SuccessMessageMixin, UpdateVi
 class AddPhotoView(user_mixins.LogInRequiredView, SuccessMessageMixin, FormView):
     model = models.Photo
     template_name = "rooms/photo_add.html"
+    fields = ("caption", "file")
     form_class = forms.AddPhotoForm
 
     def form_valid(self, form):
         pk = self.kwargs.get("pk")
+        messages.success(self.request, "Uploaded Photo")
         form.save(pk)
-
+        return redirect(reverse("rooms:photos", kwargs={"pk": pk}))
